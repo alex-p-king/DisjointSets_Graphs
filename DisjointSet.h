@@ -1,9 +1,11 @@
 #pragma once
 #include <iostream>
-
+#include <string>
+#include <fstream>
+#include <list>
 struct Node{
-    Node():_key(-1),_rank(0),_parent(this){}
-    Node(int key):_key(key),_rank(0),_parent(this){}
+    Node():_key(-1),_rank(0),_parent(nullptr){}
+    Node(int key):_key(key),_rank(0),_parent(nullptr){}
     int _key;
     int _rank;
     Node * _parent;
@@ -17,11 +19,21 @@ class DisjointSet{
             _arr = new Node*[size];
             _size = size;
         }
+
+        void makeSet(std::list<int> data){
+            int val;
+            for(int i = 0; i < _size; i++){
+                val = data.front();
+                _arr[i] = new Node(val);
+                data.pop_front();   
+            }
+        }
+
         int find(int x){
             for(int i = 0; i < _size; i++){
                 if(_arr[i]->_key == x){
                     Node * tmp = _arr[i];
-                    while(_arr[i]->_parent->_key != _arr[i]->_key){
+                    while(tmp->_parent){
                         tmp = tmp->_parent;
                     }
                     return tmp->_key;
@@ -54,6 +66,19 @@ class DisjointSet{
             else{
                 _arr[index1]->_parent = _arr[index2];
                 _arr[index1]->_rank = _arr[index2]->_rank > _arr[index1]->_rank ? _arr[index2]->_rank : _arr[index1]->_rank;
+            }
+        }
+
+        void printPath(int element){
+            Node * tmp;
+            for(int i = 0; i < _size; i++){
+                if(_arr[i]->_key == element){
+                    tmp = _arr[i];
+                    while(tmp){
+                    std::cout << "Element: " << tmp->_key << std::endl;
+                    tmp = tmp->_parent;
+                    }
+                }
             }
         }
     private:

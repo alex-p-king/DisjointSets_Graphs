@@ -20,4 +20,4 @@ main.o: main.cpp
 	all
 
 clean:
-	rm *.o heap
+	rm *.o dg
