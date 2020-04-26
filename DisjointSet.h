@@ -41,6 +41,7 @@ class DisjointSet{
             }
             return -1;
         }
+
         void Union(int r1, int r2){
             int root1 = find(r1);
             int root2 = find(r2);
@@ -58,14 +59,49 @@ class DisjointSet{
                     index2 = i;
                 }
             }
-            if(_arr[index1]->_key < _arr[index2]->_key){
+            if(_arr[index1]->_rank > _arr[index2]->_rank){
                 _arr[index2]->_parent = _arr[index1];
                 _arr[index1]->_rank = _arr[index1]->_rank > _arr[index2]->_rank ? _arr[index1]->_rank : _arr[index2]->_rank;
                 _arr[index1]->_rank++;
             }
-            else{
+            else if(_arr[index1]->_rank < _arr[index2]->_rank){
                 _arr[index1]->_parent = _arr[index2];
-                _arr[index1]->_rank = _arr[index2]->_rank > _arr[index1]->_rank ? _arr[index2]->_rank : _arr[index1]->_rank;
+                _arr[index2]->_rank = _arr[index2]->_rank > _arr[index1]->_rank ? _arr[index2]->_rank : _arr[index1]->_rank;
+                _arr[index2]->_rank++;
+            }
+            else{
+                if(_arr[index1]->_key < _arr[index2]->_key){
+                _arr[index2]->_parent = _arr[index1];
+                _arr[index1]->_rank = _arr[index1]->_rank > _arr[index2]->_rank ? _arr[index1]->_rank : _arr[index2]->_rank;
+                _arr[index1]->_rank++;
+                }
+                else{
+                    _arr[index1]->_parent = _arr[index2];
+                    _arr[index2]->_rank = _arr[index2]->_rank > _arr[index1]->_rank ? _arr[index2]->_rank : _arr[index1]->_rank;
+                    _arr[index2]->_rank++;
+                }
+            }
+            
+        }
+
+        void pathCompression(int element){
+            int parent = find(element);
+            Node * parentNode;
+            for(int i = 0; i < _size; i++){
+                if(_arr[i]->_key == parent){
+                    parentNode = _arr[i];
+                }
+            }
+            for(int i = 0; i < _size; i++){
+                if(_arr[i]->_key == element){
+                    Node * tmp = _arr[i];
+                    Node * tmp2 = tmp;
+                    while(tmp){
+                        tmp2 = tmp2->_parent;
+                        tmp->_parent = parentNode;
+                        tmp = tmp2;
+                    }
+                }
             }
         }
 

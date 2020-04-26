@@ -78,6 +78,10 @@ class Driver{
                 }
                 case 4:{
                     //PathCompression
+                    int element;
+                    std::cout << "Enter the element who's set you want to perform path compression: ";
+                    std::cin >> element;
+                    _set->pathCompression(element);
                     break;
                 }
                 case 5:{
