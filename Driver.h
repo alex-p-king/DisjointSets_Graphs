@@ -4,12 +4,45 @@
 #include <string>
 #include "DisjointSet.h"
 #include <list>
-
+#include "Graph.h"
+#include <vector>
 
 class Driver{
     public:
         Driver(){
-            
+            std::ifstream infile;
+            infile.open("data2.txt");
+            std::string islandName;
+            int islandNumber;
+            std::vector<Island> islands;
+            int graphSize;
+            int weight;
+            int ** arr;
+            while(!infile.eof()){
+                infile >> islandName;
+                if(islandName == "n"){
+                    infile >> graphSize;
+                    arr = new int*[graphSize];
+                    for(int i = 0; i < graphSize; i++){
+                        arr[i] = new int[graphSize];
+                    }
+                    for(int i = 0; i < graphSize; i++){
+                        for(int j = 0; j < graphSize; j++){
+                            infile >> weight;
+                            arr[i][j] = weight;     
+                        }
+                    }
+                }
+                else{
+                    infile >> islandNumber;
+                    Island tmp(islandName,islandNumber);
+                    islands.push_back(tmp);
+                } 
+            }
+            _graph = new Graph(graphSize,arr);
+            _graph->setIslandList(islands);
+            _graph->printWeights();
+            _graph->printIslands();
         }
 
         void menu(){
@@ -120,5 +153,6 @@ class Driver{
 
     private:
         DisjointSet * _set;
+        Graph * _graph;
 
 };
