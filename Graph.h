@@ -87,21 +87,12 @@ class Graph{
             }
         }
         std::string translate(int islandNumber){
-            switch (islandNumber)
-            {
-            case 0:
-                return "Tyrannosaurus Rex";
-            case 1:
-                return "Velociraptors";
-            case 2:
-                return "Indominous Rex";
-            case 3:
-                return "Mososaurus";
-            case 4:
-                return "Spinosaurus";
-            default:
-                break;
+            for(unsigned int i = 0; i < _islandList.size(); i++){
+                if(islandNumber == _islandList.at(i)._islandNumber - 1){
+                    return _islandList.at(i)._name;
+                }
             }
+            return "Invalid index";
         }
 
         bool validate(int a, int b, std::vector<bool> vec){
