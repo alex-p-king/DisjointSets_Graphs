@@ -43,6 +43,13 @@ class Driver{
             _graph->setIslandList(islands);
             _graph->printWeights();
             _graph->printIslands();
+            std::vector<bool> visited(graphSize,false);
+            _graph->dfs(0,visited);
+            std::cout << std::endl;
+            std::cout << "BFS:\n";
+            _graph->bfs();
+            std::cout << "Kruskal's:\n";
+            _graph->kruskals();
         }
 
         void menu(){
