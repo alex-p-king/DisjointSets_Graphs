@@ -40,16 +40,7 @@ class Driver{
                 } 
             }
             _graph = new Graph(graphSize,arr);
-            _graph->setIslandList(islands);
-            _graph->printWeights();
-            _graph->printIslands();
-            std::vector<bool> visited(graphSize,false);
-            _graph->dfs(0,visited);
-            std::cout << std::endl;
-            std::cout << "BFS:\n";
-            _graph->bfs();
-            std::cout << "Kruskal's:\n";
-            _graph->kruskals();
+            _graph->setIslandList(islands);      
         }
 
         void menu(){
@@ -134,18 +125,25 @@ class Driver{
                 }
                 case 6:{
                     //BFS
+                    _graph->bfs();
+                    std::cout << std::endl;
                     break;
                 }
                 case 7:{
                     //DFS
+                    std::vector<bool> visited(_graph->getSize(),false);
+                    _graph->dfs(0,visited);
+                    std::cout << std::endl;
                     break;
                 }
                 case 8:{
                     //Kruskal MST
+                    _graph->kruskals();
                     break;
                 }
                 case 9:{
                     //Prim MST
+                    _graph->prims();
                     break;
                 }
                 case 10:{

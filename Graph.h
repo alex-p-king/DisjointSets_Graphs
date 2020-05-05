@@ -104,9 +104,23 @@ class Graph{
             }
         }
 
+        bool validate(int a, int b, std::vector<bool> vec){
+            if(a == b)
+                return false;
+            if(vec[a] == false && vec[b] == false)
+                return false;
+            if(vec[a] == true && vec[b] == true)
+                return false;
+            return true;
+        }
         void kruskals(){
             DisjointSet ds(_size);
-            std::list<int> data = {0,1,2,3,4};
+            std::list<int> data;
+            for(unsigned int i = 0; i < _islandList.size(); i++){
+                data.push_back(_islandList.at(i)._islandNumber - 1);
+            }
+            std::vector<std::string> edges;
+            std::string from,to,tmp;
             ds.makeSet(data);
             int minimumCostEdge,numberOfEdges;
             minimumCostEdge = numberOfEdges = 0;
@@ -122,15 +136,55 @@ class Graph{
                     }
                 }
                 ds.Union(a,b);
-                printf("Edge %d:(%d, %d) cost: %d\n",numberOfEdges++,a,b,min);
+                from = translate(a), to = translate(b);
+                tmp = "(" + from + ", " + to + ')';
+                edges.push_back(tmp);
+                numberOfEdges++;
                 minimumCostEdge += min; 
             }
-            std::cout << "Minimum Cost: " << minimumCostEdge << std::endl;
+            for(unsigned int i = 0; i < edges.size(); i++){
+                std::cout << edges.at(i) << " ";
+            }
+            std::cout << std::endl;
+            std::cout << "Total length of the route = " << minimumCostEdge << " miles" << std::endl;
+            std::cout << "Total estimate to construct the bridges in the route = " << minimumCostEdge << "*" << 250000 << " = " << minimumCostEdge*250000 << "$" << std::endl;
 
         }
         void prims(){
-
+            std::vector<bool> visited(_size, false);
+            std::vector<std::string> edges;
+            std::string from,to,tmp;
+            visited[0] = true;
+            int numberOfEdges, minimumCostEdge;
+            numberOfEdges = minimumCostEdge = 0;
+            while(numberOfEdges < _size - 1){
+                int min = 100, a = -1, b = -1;
+                for(int i = 0; i < _size; i++){
+                    for(int j = 0; j < _size; j++){
+                        if(_weightMatrix[i][j] < min && validate(i,j,visited) && _weightMatrix[i][j] != -1){
+                            min = _weightMatrix[i][j], a = i, b = j;
+                        }
+                    }
+                }
+                if(a != b != -1){
+                    from = translate(a);
+                    to = translate(b);
+                    tmp = "(" + from + ", " + to + ')';
+                    edges.push_back(tmp);
+                    numberOfEdges++;
+                    minimumCostEdge += min;
+                    visited[a] = true;
+                    visited[b] = true;
+                }
+            }
+            for(unsigned int i = 0; i < edges.size(); i++){
+                std::cout << edges.at(i) << " ";
+            }
+            std::cout << std::endl;
+            std::cout << "Total length of the route = " << minimumCostEdge << " miles" << std::endl;
+            std::cout << "Total estimate to construct the bridges in the route = " << minimumCostEdge << "*" << 250000 << " = " << minimumCostEdge*250000 << "$" << std::endl;
         }
+        int getSize(){return _size;}
 
     private:
         int ** _weightMatrix;

@@ -4,6 +4,6 @@
 int main(){
 
     Driver * d = new Driver;
-    //d->run();
+    d->run();
     return 0;
 }
